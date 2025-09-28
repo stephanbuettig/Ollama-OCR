@@ -44,6 +44,8 @@ def _pyinstaller_command() -> list[str]:
         "streamlit",
         "--collect-data",
         "streamlit",
+        "--collect-all",
+        "streamlit",
         "--hidden-import",
         "streamlit",
         "--collect-all",
@@ -53,7 +55,7 @@ def _pyinstaller_command() -> list[str]:
         str(app_entry),
     ]
 
-    streamlit_metadata_args = ["--collect-all", "streamlit"]
+    streamlit_metadata_args: list[str] = []
     try:
         importlib_metadata.distribution("streamlit")
     except Exception:

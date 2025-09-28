@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SRC_DIR = REPO_ROOT / "src" / "ollama_ocr"
+SRC_DIR = REPO_ROOT / "src"
 BUILD_DIR = REPO_ROOT / "portable" / "build"
 DIST_DIR = REPO_ROOT / "portable" / "dist"
 SPEC_DIR = BUILD_DIR
@@ -16,7 +16,7 @@ SPEC_DIR = BUILD_DIR
 
 def _pyinstaller_command() -> list[str]:
     """Return the PyInstaller command used for the Windows portable build."""
-    app_entry = SRC_DIR / "app.py"
+    app_entry = SRC_DIR / "ollama_ocr" / "app.py"
 
     return [
         sys.executable,
@@ -35,7 +35,11 @@ def _pyinstaller_command() -> list[str]:
         str(SPEC_DIR),
         "--paths",
         str(SRC_DIR),
-        "--collect-all",
+        "--collect-submodules",
+        "streamlit",
+        "--collect-data",
+        "streamlit",
+        "--copy-metadata",
         "streamlit",
         "--hidden-import",
         "streamlit",

@@ -7,6 +7,11 @@ import subprocess
 import sys
 from pathlib import Path
 
+try:  # pragma: no cover - compatibility import
+    from importlib import metadata as importlib_metadata
+except ImportError:  # pragma: no cover
+    import importlib_metadata  # type: ignore
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SRC_DIR = REPO_ROOT / "src"
 BUILD_DIR = REPO_ROOT / "portable" / "build"
@@ -18,7 +23,7 @@ def _pyinstaller_command() -> list[str]:
     """Return the PyInstaller command used for the Windows portable build."""
     app_entry = SRC_DIR / "ollama_ocr" / "app.py"
 
-    return [
+    command = [
         sys.executable,
         "-m",
         "PyInstaller",
@@ -39,8 +44,6 @@ def _pyinstaller_command() -> list[str]:
         "streamlit",
         "--collect-data",
         "streamlit",
-        "--copy-metadata",
-        "streamlit",
         "--hidden-import",
         "streamlit",
         "--collect-all",
@@ -49,6 +52,18 @@ def _pyinstaller_command() -> list[str]:
         "ocr_processor",
         str(app_entry),
     ]
+
+    streamlit_metadata_args = ["--collect-all", "streamlit"]
+    try:
+        importlib_metadata.distribution("streamlit")
+    except Exception:
+        pass
+    else:
+        streamlit_metadata_args = ["--copy-metadata", "streamlit"]
+
+    command.extend(streamlit_metadata_args)
+
+    return command
 
 
 def build() -> Path:

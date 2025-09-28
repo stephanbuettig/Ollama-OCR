@@ -55,17 +55,20 @@ def _pyinstaller_command() -> list[str]:
         str(app_entry),
     ]
 
-    streamlit_metadata_args: list[str] = []
+    command.extend(_streamlit_metadata_args())
+
+    return command
+
+
+def _streamlit_metadata_args() -> list[str]:
+    """Return PyInstaller options for streamlit metadata when available."""
+
     try:
         importlib_metadata.distribution("streamlit")
     except Exception:
-        pass
-    else:
-        streamlit_metadata_args = ["--copy-metadata", "streamlit"]
+        return []
 
-    command.extend(streamlit_metadata_args)
-
-    return command
+    return ["--copy-metadata", "streamlit"]
 
 
 def build() -> Path:

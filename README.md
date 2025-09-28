@@ -139,7 +139,37 @@ cd src/ollama_ocr
 streamlit run app.py
 ```
 
-## 📒 Example Notebooks 
+## 🪟 Build a Windows Portable App
+
+You can package the Streamlit application as a standalone Windows bundle that
+ships with Python and all dependencies pre-installed. The resulting
+`Ollama-OCR-portable.zip` archive can be extracted and executed without any
+installation steps.
+
+### Requirements
+
+- Windows 10 or later (64-bit)
+- Python 3.10 or newer available on `PATH`
+- [Ollama](https://ollama.com/download) running locally with the required
+  vision models pulled
+
+### Build steps
+
+```powershell
+python portable\build_portable_windows.py
+```
+
+The script will:
+
+1. Install `pyinstaller` if it is missing.
+2. Bundle the Streamlit application and its dependencies into `portable/dist/Ollama-OCR/`.
+3. Generate convenience launchers (a `.bat` file and README).
+4. Create `Ollama-OCR-portable.zip` in the project root containing everything needed to run the app.
+
+After extracting the archive on Windows, double-click `Start Ollama OCR.bat`
+or run `Ollama-OCR.exe` to launch the application in your browser.
+
+## 📒 Example Notebooks
 - [Ollama OCR on Colab](example_notebooks\ollama_ocr_on_colab.ipynb): How to use Ollama-OCR on Google Colab.
 - [Example Notebook](example_notebooks\example.ipynb): Example usage of Ollama OCR.
 - [Ollama OCR with Autogen](example_notebooks\ollama-ocr-with-autogen.ipynb): Use Ollama-OCR with autogen.

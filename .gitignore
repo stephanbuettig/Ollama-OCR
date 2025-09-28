@@ -14,3 +14,6 @@ setup.py
 *.png
 input/pdf.pdf
 *.pyc
+portable/dist/
+portable/build/
+Ollama-OCR-portable.zip
